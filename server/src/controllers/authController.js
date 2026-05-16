@@ -8,7 +8,7 @@ const registerUser = async (req, res, next) => {
 
     if (isUserExist) {
       const error = new Error("User already exist");
-      res.status(409);
+      error.statusCode=409;
       return next(error);
     }
 
@@ -35,7 +35,7 @@ const loginUser = async (req, res, next) => {
     const userRegisterd = await userModel.findOne({ email });
     if (!userRegisterd) {
       const error = new Error("User not found");
-      res.status(404);
+      error.statusCode=404;
       return next(error);
     }
     const passwordCheck = await bcryptjs.compare(
@@ -45,7 +45,7 @@ const loginUser = async (req, res, next) => {
 
     if (!passwordCheck) {
       const error = new Error("Invalid credentials");
-      res.status(401);
+      error.statusCode=401;
       return next(error);
     }
     const jwt_secret = process.env.JWT_SECRET;
