@@ -1,6 +1,8 @@
 import productModel from "../models/product.model.js";
 import categoryModel from "../models/category.model.js";
+import uploadToCloudinary from "../services/cloudinary.service.js";
 import mongoose from "mongoose";
+
 const allProducts = async (req, res, next) => {
   try {
     const products = await productModel.find();
@@ -12,7 +14,6 @@ const allProducts = async (req, res, next) => {
     next(error);
   }
 };
-
 const productsByCategory = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -50,12 +51,10 @@ const singleProduct = async (req, res, next) => {
     next(error);
   }
 };
-
 const createProduct = async (req, res, next) => {
   try {
     const {
       title,
-      images,
       description,
       price,
       slug,
@@ -75,9 +74,19 @@ const createProduct = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
+
+    const uploadedImages = [];
+
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await uploadToCloudinary(file.buffer, "products");
+        uploadedImages.push(result.secure_url);
+      }
+    }
+
     const product = await productModel.create({
       title,
-      images,
+      images: uploadedImages,
       description,
       price,
       slug,
@@ -121,9 +130,26 @@ const updateProduct = async (req, res, next) => {
       return next(new Error("Invalid product id"));
     }
 
+    const product = await productModel.findById(id);
+    if (!product) {
+      const error = new Error("Product not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const updatedImages = [...product.images];
+
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        const result = await uploadToCloudinary(file.buffer, "products");
+
+        updatedImages.push(result.secure_url);
+      }
+    }
+
     const updatedProduct = await productModel.findByIdAndUpdate(
       id,
-      { $set: req.body },
+      { $set: req.body, images: updatedImages },
       { new: true, runValidators: true },
     );
 
