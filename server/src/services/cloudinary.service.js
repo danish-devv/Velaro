@@ -10,7 +10,7 @@ const uploadToCloudinary = async (buffer, folder = "products") => {
         else reject(error);
       },
     );
-    
+
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };

@@ -32,7 +32,7 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const userRegisterd = await userModel.findOne({ email });
+    const userRegisterd = await userModel.findOne({ email }).select("+password");
     if (!userRegisterd) {
       const error = new Error("User not found");
       error.statusCode=404;
