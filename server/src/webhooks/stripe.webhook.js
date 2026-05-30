@@ -1,5 +1,6 @@
 import stripe from "../config/stripe.js";
 import orderModel from "../models/order.Model.js";
+import productModel from "../models/product.model.js";
 
 const stripeWebhook = async (req, res, next) => {
   const signature = req.headers["stripe-signature"];
@@ -19,7 +20,6 @@ const stripeWebhook = async (req, res, next) => {
   }
 
   if (event.type === "checkout.session.completed") {
-    console.log("payment successful");
     const session = event.data.object;
 
     const userId = session.metadata.userId;
@@ -30,7 +30,7 @@ const stripeWebhook = async (req, res, next) => {
     const products = JSON.parse(session.metadata.products || "[]");
 
     try {
-      await orderModel.create({
+      const order = await orderModel.create({
         userId,
         products,
         shippingAddress,
@@ -42,6 +42,12 @@ const stripeWebhook = async (req, res, next) => {
         },
         status: "processing",
       });
+
+      for (const item of products) {
+        await productModel.findByIdAndUpdate(item.productId, {
+          $inc: { stock: -item.quantity },
+        });
+      }
     } catch (error) {
       console.log(error);
       return res.status(500).json({

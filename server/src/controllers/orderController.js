@@ -24,7 +24,6 @@ const calculatePrice = (items) => {
 const createOrder = async (req, res, next) => {
   try {
     const id = req.user.id;
-
     const { products, shippingAddress, paymentMethod } = req.body;
 
     if (!products || products.length === 0) {
