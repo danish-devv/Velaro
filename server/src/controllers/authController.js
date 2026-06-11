@@ -54,12 +54,17 @@ const loginUser = async (req, res, next) => {
       jwt_secret,
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-    });
-
+    
+const user={
+  id: userRegisterd._id,
+    name: userRegisterd.name,
+    email: userRegisterd.email,
+    isAdmin: userRegisterd.isAdmin
+}
     res.status(200).json({
       message: "you login successfully",
+      user,
+      token
     });
   } catch (error) {
     return next(error);
