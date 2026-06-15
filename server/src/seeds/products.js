@@ -33,10 +33,18 @@ const dummyData = async () => {
       },
     ];
     const createCategories = await categoryModel.insertMany(categories);
-const electronics=createCategories.find((c)=>{return c.slug==="electronics"})
-const mens=createCategories.find((c)=>{return c.slug==="mens"})
-const Womens=createCategories.find((c)=>{return c.slug==="womens"})
-const kids=createCategories.find((c)=>{return c.slug==="kids"})
+    const electronics = createCategories.find((c) => {
+      return c.slug === "electronics";
+    });
+    const mens = createCategories.find((c) => {
+      return c.slug === "mens";
+    });
+    const Womens = createCategories.find((c) => {
+      return c.slug === "womens";
+    });
+    const kids = createCategories.find((c) => {
+      return c.slug === "kids";
+    });
 
     const products = [
       {
@@ -115,4 +123,3 @@ const kids=createCategories.find((c)=>{return c.slug==="kids"})
 };
 
 dummyData();
-

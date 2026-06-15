@@ -58,7 +58,7 @@ const Navbar = () => {
             <span>{user.name}</span>
 
             <button
-              className="px-5 py-2 bg-[#6C63FF] text-white rounded-lg hover:opacity-90 transition"
+              className=" cursor-pointer px-5 py-2 bg-[#6C63FF] text-white rounded-lg hover:opacity-90 transition"
               onClick={logout}
             >
               Logout

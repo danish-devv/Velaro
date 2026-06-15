@@ -1,9 +1,15 @@
-import React from 'react'
-
+import Hero from "../../components/Hero";
+import FeaturedProducts from "../../components/FeaturedProducts";
+import Categories from "../categories/Categories";
 const Home = () => {
   return (
-    <div>Homepage</div>
-  )
-}
+    <div>
+      <Hero />
+      <FeaturedProducts />
+      
+      <Categories />
+    </div>
+  );
+};
 
-export default Home
+export default Home;

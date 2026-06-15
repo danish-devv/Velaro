@@ -1,6 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import categoryModel from "../models/category.model.js";
 import uploadToCloudinary from "../services/cloudinary.service.js";
+import productModel from "../models/product.model.js";
 const allCategories = async (req, res, next) => {
   try {
     const categories = await categoryModel.find();
@@ -19,15 +20,17 @@ const singleCategory = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
-    const category = await categoryModel.findById(id);
-    if (!category) {
-      const error = new Error("Category not found");
+    const products = await productModel.find({
+      category:id
+    });
+    if (!products) {
+      const error = new Error("products not found");
       error.statusCode = 404;
       return next(error);
     }
     res.status(200).json({
       message: "Category fetched successfuly",
-      category,
+      products,
     });
   } catch (error) {
     next(error);

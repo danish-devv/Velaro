@@ -11,6 +11,7 @@ import {
   updateProduct,
 } from "../controllers/productsController.js";
 
+
 const router = express.Router();
 router.get("/", allProducts);
 router.get("/category/:id", productsByCategory);

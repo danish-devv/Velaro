@@ -9,6 +9,8 @@ import Checkout from "../pages/checkout/Checkout";
 import ProtectedRoutes from "../components/ProtectedRoutes"
 import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/admin/Dashboard";
+import ProductDetails from "../pages/products/ProductDetails";
+import CategoryDetails from "../pages/categories/CategoryDetails";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,6 +20,9 @@ const AppRoutes = () => {
         <Route path="login" element={<Login />} />
         <Route path="products" element={<Products />} />
         <Route path="categories" element={<Categories />} />
+        <Route path="products/:id" element={<ProductDetails />} />
+        <Route path="categories/:id" element={<CategoryDetails />} />
+
         <Route
           path="checkout"
           element={
