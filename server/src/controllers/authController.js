@@ -61,6 +61,7 @@ const user={
     email: userRegisterd.email,
     isAdmin: userRegisterd.isAdmin
 }
+res.cookie("token",token)
     res.status(200).json({
       message: "you login successfully",
       user,

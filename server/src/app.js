@@ -9,6 +9,7 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 import webhookRoutes from "./routes/webhookRoute.js";
 import getUsersRoutes from "./routes/getUsersRoute.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
 app.use(
@@ -27,7 +28,7 @@ app.use("/api/products", productsRoute);
 app.use("/api/category", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
-
+app.use("/api/cart", cartRoutes);
 app.use(errorHandler);
 
 export default app;
