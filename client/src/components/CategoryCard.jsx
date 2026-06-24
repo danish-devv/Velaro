@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 const CategoryCard = ({ category }) => {
-  // Defensive check
   if (!category) return null;
 
   return (
