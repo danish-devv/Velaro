@@ -12,6 +12,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
 import CategoryDetails from "../pages/categories/CategoryDetails";
 import OrderSuccess from "../pages/checkout/OrderSuccess";
+import CreateCategory from "../pages/admin/CreateCategory";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -39,6 +40,14 @@ const AppRoutes = () => {
           element={
             <AdminRoute>
               <Dashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="categories/create"
+          element={
+            <AdminRoute>
+              <CreateCategory />
             </AdminRoute>
           }
         />
