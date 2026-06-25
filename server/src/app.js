@@ -12,16 +12,19 @@ import errorHandler from "./middlewares/errorMiddleware.js";
 import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://velaro-kappa.vercel.app"],
     credentials: true,
   }),
 );
+
 app.use("/api/webhook", webhookRoutes);
 
 app.use(cookieParser());
 app.use(express.json());
+
 app.use("/api/users", getUsersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoute);
@@ -29,6 +32,7 @@ app.use("/api/category", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/cart", cartRoutes);
+
 app.use(errorHandler);
 
 export default app;
