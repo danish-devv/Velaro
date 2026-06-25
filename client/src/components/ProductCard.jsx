@@ -7,10 +7,9 @@ const ProductCard = ({ product }) => {
         <div className="h-[70%]">
           <img
             className="w-full h-full object-cover rounded-t-md "
-            src={product.image}
+            src={product.images?.[0]}
             alt="Product"
           />
-          
         </div>
         {/* Text section (30%) */}
         <div className="h-[30%] flex flex-col justify-center items-center p-2 bg-white rounded-b-md">
