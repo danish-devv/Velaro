@@ -1,5 +1,5 @@
 import { useState } from "react";
-import createCategory from "../../api/CreateCategoryApi.js"; 
+import createCategory from "../../api/CreateCategoryApi.js";
 
 export default function CreateCategory() {
   const [form, setForm] = useState({
@@ -87,7 +87,6 @@ export default function CreateCategory() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          {/* Alerts */}
           {error && (
             <div className="mb-6 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
               {error}
@@ -100,7 +99,6 @@ export default function CreateCategory() {
           )}
 
           <div className="space-y-6">
-            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Name <span className="text-red-400">*</span>
@@ -120,7 +118,6 @@ export default function CreateCategory() {
               />
             </div>
 
-            {/* Slug */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Slug <span className="text-red-400">*</span>
@@ -147,7 +144,6 @@ export default function CreateCategory() {
               </p>
             </div>
 
-            {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Description
@@ -166,7 +162,6 @@ export default function CreateCategory() {
               />
             </div>
 
-            {/* Image Upload */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Image
@@ -233,7 +228,6 @@ export default function CreateCategory() {
               )}
             </div>
 
-            {/* isActive toggle */}
             <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-gray-50 border border-gray-100">
               <div>
                 <p className="text-sm font-medium text-gray-700">Active</p>
@@ -258,7 +252,6 @@ export default function CreateCategory() {
               </button>
             </div>
 
-            {/* Submit */}
             <button
               type="button"
               onClick={handleSubmit}

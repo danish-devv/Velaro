@@ -11,7 +11,6 @@ import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
 import CategoryDetails from "../pages/categories/CategoryDetails";
-import OrderSuccess from "../pages/checkout/OrderSuccess";
 import CreateCategory from "../pages/admin/CreateCategory";
 const AppRoutes = () => {
   return (
@@ -33,7 +32,6 @@ const AppRoutes = () => {
             </ProtectedRoutes>
           }
         />
-        <Route path="success" element={<OrderSuccess />} />
 
         <Route
           path="dashboard"

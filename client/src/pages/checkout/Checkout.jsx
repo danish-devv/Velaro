@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import createOrder from "../../api/orderApi.js";
 import { CartContext } from "../../context/CartContext.jsx";
 
@@ -12,7 +12,6 @@ const calculatePrice = (itemsPrice) => {
 
 const Checkout = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
   const { clearCart } = useContext(CartContext);
 
   const fromCart = state?.fromCart || false;
@@ -20,14 +19,11 @@ const Checkout = () => {
   const product = state?.product;
   const quantity = state?.quantity || 1;
 
-  const [form, setForm] = useState({
-    fullName: "",
-    phoneNo: "",
-    address: "",
-  });
+  const [form, setForm] = useState({ fullName: "", phoneNo: "", address: "" });
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -81,10 +77,8 @@ const Checkout = () => {
       };
 
       await createOrder(orderData);
-
       if (fromCart) await clearCart();
-
-      navigate("/success");
+      setOrderPlaced(true);
     } catch (err) {
       setError(
         err?.response?.data?.message || "Something went wrong. Try again.",
@@ -98,6 +92,41 @@ const Checkout = () => {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">
         No product selected.
+      </div>
+    );
+  }
+
+  if (orderPlaced) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="bg-white border border-gray-200 rounded-2xl p-10 max-w-md w-full text-center">
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
+            style={{ backgroundColor: "#7A72FF20" }}
+          >
+            <svg
+              className="w-7 h-7"
+              style={{ color: "#7A72FF" }}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Order placed!
+          </h2>
+          <p className="text-sm text-gray-400">
+            Thanks, {form.fullName.split(" ")[0]}! Your order is confirmed and
+            will be delivered to you soon.
+          </p>
+        </div>
       </div>
     );
   }
@@ -124,7 +153,7 @@ const Checkout = () => {
                   value={form.fullName}
                   onChange={handleChange}
                   placeholder="Danish Khan"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7A72FF]"
                 />
               </div>
 
@@ -138,7 +167,7 @@ const Checkout = () => {
                   value={form.phoneNo}
                   onChange={handleChange}
                   placeholder="03001234567"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7A72FF]"
                 />
               </div>
 
@@ -152,7 +181,7 @@ const Checkout = () => {
                   value={form.address}
                   onChange={handleChange}
                   placeholder="Street, area, city"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#7A72FF]"
                 />
               </div>
             </div>
@@ -166,7 +195,7 @@ const Checkout = () => {
                 onClick={() => setPaymentMethod("COD")}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg border text-left transition-all ${
                   paymentMethod === "COD"
-                    ? "border-blue-500 bg-blue-50"
+                    ? "border-[#7A72FF] bg-[#7A72FF0D]"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
@@ -265,7 +294,8 @@ const Checkout = () => {
             <button
               onClick={handlePlaceOrder}
               disabled={loading}
-              className="w-full mt-5 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+              className="w-full mt-5 py-3 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+              style={{ backgroundColor: "#7A72FF" }}
             >
               {loading ? "Placing order..." : "Place order"}
             </button>
