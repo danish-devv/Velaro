@@ -12,6 +12,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
 import CategoryDetails from "../pages/categories/CategoryDetails";
 import CreateCategory from "../pages/admin/CreateCategory";
+import CreateProduct from "../pages/admin/CreateProduct"
 const AppRoutes = () => {
   return (
     <Routes>
@@ -46,6 +47,14 @@ const AppRoutes = () => {
           element={
             <AdminRoute>
               <CreateCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="products/create"
+          element={
+            <AdminRoute>
+              <CreateProduct />
             </AdminRoute>
           }
         />
