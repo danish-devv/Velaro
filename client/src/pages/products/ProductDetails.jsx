@@ -38,7 +38,7 @@ const ProductDetails = () => {
 
   const handleBuyNow = () => {
     navigate("/checkout", {
-      state: { product, qty },
+      state: { product, quantity: qty }, // ← only change
     });
   };
 
@@ -80,7 +80,6 @@ const ProductDetails = () => {
           <p className="text-sm text-gray-500 mb-4">
             Only {product.stock} items left
           </p>
-
           <div className="flex items-center gap-4 border rounded-lg px-4 py-2 w-fit mb-4">
             <button
               className="cursor-pointer text-2xl font-bold text-gray-600 hover:text-indigo-600 transition"
@@ -96,7 +95,6 @@ const ProductDetails = () => {
               +
             </button>
           </div>
-
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <button
               className="flex-1 px-5 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition"
@@ -111,7 +109,6 @@ const ProductDetails = () => {
               Buy It Now
             </button>
           </div>
-
           <p className="text-gray-700 leading-relaxed">{product.description}</p>
         </div>
       </div>

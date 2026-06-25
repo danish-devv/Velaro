@@ -14,7 +14,9 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
   const handleCheckout = () => {
     onClose();
-    navigate("/checkout");
+    navigate("/checkout", {
+      state: { fromCart: true, items: cart },
+    });
   };
 
   return (
@@ -110,7 +112,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       {item.product.title}
                     </p>
                     <p className="text-sm text-[#6C63FF] font-semibold mt-0.5">
-                      ${item.product.price.toFixed(2)}
+                      Rs. {item.product.price.toLocaleString()}
                     </p>
 
                     <div className="flex items-center gap-2 mt-2">
@@ -139,7 +141,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
                   <div className="flex flex-col items-end justify-between shrink-0">
                     <p className="text-sm font-semibold text-gray-800">
-                      ${(item.product.price * item.qty).toFixed(2)}
+                      Rs. {(item.product.price * item.qty).toLocaleString()}
                     </p>
                     <button
                       onClick={() => removeItem(item.product._id)}
@@ -172,7 +174,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Subtotal</span>
               <span className="text-lg font-bold text-gray-800">
-                ${subtotal.toFixed(2)}
+                Rs. {subtotal.toLocaleString()}
               </span>
             </div>
             <button

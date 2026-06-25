@@ -15,14 +15,23 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
+
         title: {
           type: String,
           required: true,
         },
+
+        // image: {
+        //   type: String,
+        //   required: true,
+        // },
+
         price: {
           type: Number,
           required: true,
+          min: 0,
         },
+
         quantity: {
           type: Number,
           required: true,
@@ -32,9 +41,20 @@ const orderSchema = new mongoose.Schema(
     ],
 
     shippingAddress: {
-      fullName: { type: String, required: true },
-      phoneNo: { type: String, required: true },
-      address: { type: String, required: true },
+      fullName: {
+        type: String,
+        required: true,
+      },
+
+      phoneNo: {
+        type: String,
+        required: true,
+      },
+
+      address: {
+        type: String,
+        required: true,
+      },
     },
 
     payment: {
@@ -43,11 +63,13 @@ const orderSchema = new mongoose.Schema(
         enum: ["COD", "CARD", "STRIPE"],
         required: true,
       },
+
       paymentStatus: {
         type: String,
-        enum: ["pending", "completed"],
+        enum: ["pending", "paid", "failed", "refunded"],
         default: "pending",
       },
+
       transactionId: {
         type: String,
         default: null,
@@ -55,10 +77,29 @@ const orderSchema = new mongoose.Schema(
     },
 
     pricing: {
-      itemsPrice: { type: Number, required: true },
-      shippingFee: { type: Number, default: 0 },
-      discountPrice: { type: Number, default: 0 },
-      totalPrice: { type: Number, required: true },
+      itemsPrice: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+
+      shippingFee: {
+        type: Number,
+        default: 0,
+        min: 0,
+      },
+
+      discountPrice: {
+        type: Number,
+        default: 0,
+        min: 0,
+      },
+
+      totalPrice: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
     },
 
     status: {
@@ -73,8 +114,11 @@ const orderSchema = new mongoose.Schema(
       default: "processing",
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
-const orderModel = mongoose.model("Order", orderSchema);
-export default orderModel
+const Order = mongoose.model("Order", orderSchema);
+
+export default Order;

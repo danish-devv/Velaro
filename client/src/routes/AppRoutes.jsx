@@ -1,16 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/home/Home";
-import Register from "../pages/auth/Register"
+import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
-import Products from "../pages/products/Products"
-import Categories from "../pages/categories/Categories"
+import Products from "../pages/products/Products";
+import Categories from "../pages/categories/Categories";
 import MainLayout from "../layouts/MainLayout";
 import Checkout from "../pages/checkout/Checkout";
-import ProtectedRoutes from "../components/ProtectedRoutes"
+import ProtectedRoutes from "../components/ProtectedRoutes";
 import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
 import CategoryDetails from "../pages/categories/CategoryDetails";
+import OrderSuccess from "../pages/checkout/OrderSuccess";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -31,6 +32,8 @@ const AppRoutes = () => {
             </ProtectedRoutes>
           }
         />
+        <Route path="success" element={<OrderSuccess />} />
+
         <Route
           path="dashboard"
           element={

@@ -8,22 +8,23 @@ const calculatePrice = (items) => {
     itemsPrice += item.price * item.quantity;
   });
 
-  const shippingFee = itemsPrice > 1500 ? 0 : 200;
-  const discount = itemsPrice > 2000 ? 200 : 0;
+  const shippingFee = itemsPrice > 500 ? 0 : 200;
+  const discountPrice = itemsPrice > 600 ? 200 : 0;
 
-  const totalPrice = itemsPrice + shippingFee - discount;
+  const totalPrice = itemsPrice + shippingFee - discountPrice;
 
   return {
     itemsPrice,
     shippingFee,
-    discount,
+    discountPrice,
     totalPrice,
   };
 };
 
 const createOrder = async (req, res, next) => {
   try {
-    const id = req.user.id;
+    const userId = req.user.id;
+
     const { products, shippingAddress, paymentMethod } = req.body;
 
     if (!products || products.length === 0) {
@@ -32,10 +33,8 @@ const createOrder = async (req, res, next) => {
       return next(error);
     }
 
-    // extract ids
     const productIds = products.map((item) => item.productId);
 
-    // fetch products from DB
     const dbProducts = await productModel.find({
       _id: { $in: productIds },
     });
@@ -46,11 +45,14 @@ const createOrder = async (req, res, next) => {
       return next(error);
     }
 
-    // create order items snapshot
     const orderItems = products.map((item) => {
       const product = dbProducts.find(
         (p) => p._id.toString() === item.productId,
       );
+
+      if (item.quantity < 1) {
+        throw new Error("Invalid quantity");
+      }
 
       if (product.stock < item.quantity) {
         throw new Error(`Not enough stock for ${product.title}`);
@@ -59,17 +61,16 @@ const createOrder = async (req, res, next) => {
       return {
         productId: product._id,
         title: product.title,
-        quantity: item.quantity,
+        // image: product.image,
         price: product.price,
+        quantity: item.quantity,
       };
     });
 
-    // calculate prices
     const pricing = calculatePrice(orderItems);
 
-    // create order
     const order = await orderModel.create({
-      userId: id,
+      userId,
       products: orderItems,
       shippingAddress,
       payment: {
@@ -81,10 +82,11 @@ const createOrder = async (req, res, next) => {
       status: "processing",
     });
 
-    // reduce stock
-    for (let item of orderItems) {
+    for (const item of orderItems) {
       await productModel.findByIdAndUpdate(item.productId, {
-        $inc: { stock: -item.quantity },
+        $inc: {
+          stock: -item.quantity,
+        },
       });
     }
 
