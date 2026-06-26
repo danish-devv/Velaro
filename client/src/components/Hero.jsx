@@ -21,13 +21,13 @@ const Hero = () => {
 
           <div className="mt-6 flex gap-3">
             <Link
-              to="/shop"
+              to="/products"
               className="px-6 py-3 bg-[#6C63FF] text-white rounded-lg font-semibold shadow-md hover:bg-[#5a52d6] transition"
             >
               Shop Now
             </Link>
             <Link
-              to="/explore"
+              to="/products"
               className="px-6 py-3 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-[#6C63FF] transition"
             >
               Explore Products
