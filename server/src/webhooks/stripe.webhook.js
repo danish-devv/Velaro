@@ -14,9 +14,8 @@ const stripeWebhook = async (req, res, next) => {
       process.env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    const err = new Error("Webhook verification failed");
-    err.statusCode = 400;
-    return next(err);
+    console.log("WEBHOOK ERROR:", error.message);
+    return res.status(400).send(error.message);
   }
 
   if (event.type === "checkout.session.completed") {
@@ -37,7 +36,7 @@ const stripeWebhook = async (req, res, next) => {
         pricing,
         payment: {
           method: "STRIPE",
-          paymentStatus: "completed",
+          paymentStatus: "paid",
           transactionId: session.payment_intent,
         },
         status: "processing",

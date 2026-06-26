@@ -26,17 +26,14 @@ const createCheckoutSession = async (req, res, next) => {
     const userId = req.user.id;
     const { products, shippingAddress } = req.body;
 
-    // 1. validate cart
     if (!products || products.length === 0) {
       const error = new Error("No product selected");
       error.statusCode = 400;
       throw error;
     }
 
-    // 2. get product IDs
     const productIds = products.map((item) => item.productId);
 
-    // 3. fetch DB products
     const dbProducts = await productModel.find({
       _id: { $in: productIds },
     });
@@ -47,7 +44,6 @@ const createCheckoutSession = async (req, res, next) => {
       throw error;
     }
 
-    // 4. build order items
     const orderItems = products.map((item) => {
       const product = dbProducts.find(
         (p) => p._id.toString() === item.productId,
@@ -73,10 +69,8 @@ const createCheckoutSession = async (req, res, next) => {
       };
     });
 
-    // 5. pricing
     const pricing = calculatePrice(orderItems);
 
-    // 6. Stripe line items
     const lineItems = orderItems.map((item) => ({
       price_data: {
         currency: "usd",
@@ -88,7 +82,6 @@ const createCheckoutSession = async (req, res, next) => {
       quantity: item.quantity,
     }));
 
-    // 7. create stripe session
     const session = await createStripeSession({
       lineItems,
       userId,
@@ -97,7 +90,6 @@ const createCheckoutSession = async (req, res, next) => {
       orderItems,
     });
 
-    // 8. response
     res.status(200).json({
       url: session.url,
     });
