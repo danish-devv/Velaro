@@ -20,7 +20,6 @@ const calculatePrice = (items) => {
     totalPrice,
   };
 };
-
 const createOrder = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -99,4 +98,15 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-export default createOrder;
+const getMyOrders=async (req,res,next)=>{
+const user=req.user.id
+
+
+
+
+
+}
+
+
+
+export {createOrder,getMyOrders};
