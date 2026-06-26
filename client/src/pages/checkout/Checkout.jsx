@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import createOrder from "../../api/orderApi.js";
+import { createCheckoutSession } from "../../api/paymentApi.js";
 import { CartContext } from "../../context/CartContext.jsx";
 
 const calculatePrice = (itemsPrice) => {
@@ -63,22 +64,40 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const orderData = {
-        products: summaryItems.map((item) => ({
-          productId: item._id,
-          quantity: item.quantity,
-        })),
-        shippingAddress: {
-          fullName: form.fullName,
-          phoneNo: form.phoneNo,
-          address: form.address,
-        },
-        paymentMethod,
-      };
+      if (paymentMethod === "COD") {
+        const orderData = {
+          products: summaryItems.map((item) => ({
+            productId: item._id,
+            quantity: item.quantity,
+          })),
+          shippingAddress: {
+            fullName: form.fullName,
+            phoneNo: form.phoneNo,
+            address: form.address,
+          },
+          paymentMethod,
+        };
 
-      await createOrder(orderData);
-      if (fromCart) await clearCart();
-      setOrderPlaced(true);
+        await createOrder(orderData);
+        if (fromCart) await clearCart();
+        setOrderPlaced(true);
+      } else if (paymentMethod === "Stripe") {
+        const productsData = {
+          products: summaryItems.map((item) => ({
+            productId: item._id,
+            quantity: item.quantity,
+          })),
+          shippingAddress: {
+            fullName: form.fullName,
+            phoneNo: form.phoneNo,
+            address: form.address,
+          },
+        };
+
+        const { url } = await createCheckoutSession(productsData);
+        window.location.href = url;
+        // No need to clearCart here — handle that on your success page
+      }
     } catch (err) {
       setError(
         err?.response?.data?.message || "Something went wrong. Try again.",
@@ -210,16 +229,23 @@ const Checkout = () => {
                 </div>
               </button>
 
+              {/* Stripe — now enabled */}
               <button
-                disabled
-                className="flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-100 text-left opacity-50 cursor-not-allowed"
+                onClick={() => setPaymentMethod("Stripe")}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg border text-left transition-all ${
+                  paymentMethod === "Stripe"
+                    ? "border-[#7A72FF] bg-[#7A72FF0D]"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
               >
                 <span className="text-xl">💳</span>
                 <div>
                   <p className="text-sm font-medium text-gray-900">
                     Card payment
                   </p>
-                  <p className="text-xs text-gray-400">Coming soon</p>
+                  <p className="text-xs text-gray-400">
+                    Secure checkout via Stripe
+                  </p>
                 </div>
               </button>
             </div>
@@ -297,7 +323,13 @@ const Checkout = () => {
               className="w-full mt-5 py-3 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
               style={{ backgroundColor: "#7A72FF" }}
             >
-              {loading ? "Placing order..." : "Place order"}
+              {loading
+                ? paymentMethod === "Stripe"
+                  ? "Redirecting to Stripe..."
+                  : "Placing order..."
+                : paymentMethod === "Stripe"
+                  ? "Pay with card"
+                  : "Place order"}
             </button>
           </div>
         </div>

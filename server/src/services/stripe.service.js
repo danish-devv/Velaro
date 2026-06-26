@@ -1,6 +1,7 @@
 import stripe from "../config/stripe.js";
 
 const createStripeSession = async (data) => {
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
@@ -13,12 +14,11 @@ const createStripeSession = async (data) => {
       pricing: JSON.stringify(data.pricing),
     },
 
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: `${process.env.CLIENT_URL}/success`,
+    cancel_url: `${process.env.CLIENT_URL}/cancel`,
   });
 
   return session;
 };
-
 
 export default createStripeSession;
