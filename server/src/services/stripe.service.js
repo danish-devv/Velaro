@@ -1,7 +1,6 @@
 import stripe from "../config/stripe.js";
 
 const createStripeSession = async (data) => {
-
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
