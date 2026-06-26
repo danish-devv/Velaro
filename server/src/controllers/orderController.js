@@ -98,14 +98,33 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-const getMyOrders=async (req,res,next)=>{
-const user=req.user.id
+ const getMyOrders = async (req, res, next) => {
+  try {
+    console.log("USER:", req.user.id);
+    const userId = req.user.id;
+    const orders = await orderModel.find({ userId });
 
+    const formattedOrders = orders.map((order) => ({
+      id: order._id,
+      status: order.status,
+      createdAt: order.createdAt,
+      totalPrice: order.pricing.totalPrice,
+      items: order.products.map((p) => ({
+        productId: p.productId,
+        title: p.title,
+        price: p.price,
+        quantity: p.quantity,
+      })),
+    }));
 
-
-
-
-}
+    res.json({
+      success: true,
+      orders: formattedOrders,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 

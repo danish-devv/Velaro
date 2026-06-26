@@ -10,6 +10,7 @@ import ProtectedRoutes from "../components/ProtectedRoutes";
 import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
+import MyOrders from "../pages/user/MyOrders";
 import CategoryDetails from "../pages/categories/CategoryDetails";
 import CreateCategory from "../pages/admin/CreateCategory";
 import CreateProduct from "../pages/admin/CreateProduct"
@@ -30,6 +31,15 @@ const AppRoutes = () => {
           element={
             <ProtectedRoutes>
               <Checkout />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="my-orders"
+          element={
+            <ProtectedRoutes>
+              <MyOrders />
             </ProtectedRoutes>
           }
         />

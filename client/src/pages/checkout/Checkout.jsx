@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import createOrder from "../../api/orderApi.js";
+import {createOrder} from "../../api/orderApi.js";
 import { createCheckoutSession } from "../../api/paymentApi.js";
 import { CartContext } from "../../context/CartContext.jsx";
 
