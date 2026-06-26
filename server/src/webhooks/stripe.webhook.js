@@ -2,7 +2,7 @@ import stripe from "../config/stripe.js";
 import orderModel from "../models/order.Model.js";
 import productModel from "../models/product.model.js";
 
-const stripeWebhook = async (req, res, next) => {
+const stripeWebhook = async (req, res) => {
   const signature = req.headers["stripe-signature"];
 
   let event;
@@ -29,6 +29,14 @@ const stripeWebhook = async (req, res, next) => {
     const products = JSON.parse(session.metadata.products || "[]");
 
     try {
+      const existingOrder = await orderModel.findOne({
+        "payment.transactionId": session.id,
+      });
+
+      if (existingOrder) {
+        return res.status(200).json({ received: true });
+      }
+
       const order = await orderModel.create({
         userId,
         products,
@@ -37,7 +45,7 @@ const stripeWebhook = async (req, res, next) => {
         payment: {
           method: "STRIPE",
           paymentStatus: "paid",
-          transactionId: session.payment_intent,
+          transactionId: session.id,
         },
         status: "processing",
       });
@@ -48,16 +56,14 @@ const stripeWebhook = async (req, res, next) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.log("ORDER CREATION ERROR:", error.message);
       return res.status(500).json({
         message: "Order creation failed",
       });
     }
   }
 
-  return res.status(200).json({
-    received: true,
-  });
+  return res.status(200).json({ received: true });
 };
 
 export default stripeWebhook;
