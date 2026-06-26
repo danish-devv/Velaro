@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { getProducts } from "../api/productApi";
 import ProductCard from "../components/ProductCard";
 
+const SkeletonCard = () => (
+  <div className="animate-pulse bg-white rounded-lg p-4 shadow">
+    <div className="bg-gray-200 h-32 w-full rounded-md"></div>
+    <div className="mt-4 space-y-2">
+      <div className="bg-gray-200 h-4 w-3/4 rounded"></div>
+      <div className="bg-gray-200 h-4 w-1/2 rounded"></div>
+    </div>
+  </div>
+);
+
 const FeaturedProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,10 +40,7 @@ const FeaturedProducts = () => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="animate-pulse bg-gray-200 rounded-lg h-64 w-full"
-            ></div>
+            <SkeletonCard key={i} />
           ))}
         </div>
       </div>
