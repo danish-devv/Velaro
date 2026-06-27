@@ -10,6 +10,8 @@ import ProtectedRoutes from "../components/ProtectedRoutes";
 import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/admin/Dashboard";
 import ProductDetails from "../pages/products/ProductDetails";
+import OrderSuccess from "../pages/checkout/OrderSuccess";
+import OrderCancel from "../pages/checkout/OrderCancel";
 import MyOrders from "../pages/user/MyOrders";
 import CategoryDetails from "../pages/categories/CategoryDetails";
 import CreateCategory from "../pages/admin/CreateCategory";
@@ -40,6 +42,24 @@ const AppRoutes = () => {
           element={
             <ProtectedRoutes>
               <MyOrders />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="success"
+          element={
+            <ProtectedRoutes>
+              <OrderSuccess />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="cancel"
+          element={
+            <ProtectedRoutes>
+              <OrderCancel />
             </ProtectedRoutes>
           }
         />

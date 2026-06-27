@@ -75,7 +75,7 @@ const ProductDetails = () => {
             {product.title}
           </h1>
           <h2 className="text-2xl text-indigo-600 font-semibold mb-2">
-            {product.price} RS
+            {product.price}$ 
           </h2>
           <p className="text-sm text-gray-500 mb-4">
             Only {product.stock} items left

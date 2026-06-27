@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
-import {createOrder} from "../../api/orderApi.js";
+import { createOrder } from "../../api/orderApi.js";
 import { createCheckoutSession } from "../../api/paymentApi.js";
 import { CartContext } from "../../context/CartContext.jsx";
 
@@ -281,7 +281,7 @@ const Checkout = () => {
                     </p>
                   </div>
                   <p className="text-sm font-medium text-gray-900 shrink-0">
-                    Rs. {(item.price * item.quantity).toLocaleString()}
+                    $ {(item.price * item.quantity).toLocaleString()}
                   </p>
                 </li>
               ))}
@@ -290,7 +290,7 @@ const Checkout = () => {
             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
               <div className="flex justify-between text-sm text-gray-500">
                 <span>Subtotal</span>
-                <span>Rs. {itemsPrice.toLocaleString()}</span>
+                <span>$ {itemsPrice.toLocaleString()}</span>
               </div>
 
               <div className="flex justify-between text-sm text-gray-500">
@@ -298,20 +298,20 @@ const Checkout = () => {
                 {shippingFee === 0 ? (
                   <span className="text-green-600">Free</span>
                 ) : (
-                  <span>Rs. {shippingFee.toLocaleString()}</span>
+                  <span>$ {shippingFee.toLocaleString()}</span>
                 )}
               </div>
 
               {discountPrice > 0 && (
                 <div className="flex justify-between text-sm text-green-600">
                   <span>Discount</span>
-                  <span>- Rs. {discountPrice.toLocaleString()}</span>
+                  <span>- $ {discountPrice.toLocaleString()}</span>
                 </div>
               )}
 
               <div className="flex justify-between text-base font-medium text-gray-900 pt-2 border-t border-gray-100 mt-1">
                 <span>Total</span>
-                <span>Rs. {totalPrice.toLocaleString()}</span>
+                <span>$ {totalPrice.toLocaleString()}</span>
               </div>
             </div>
 
